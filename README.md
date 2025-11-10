@@ -43,7 +43,22 @@ brewse python
 
 For full documentation, see the [main repository](https://github.com/jonasjancarik/brewse).
 
-## Updates
+## Updating the Formula
+
+When a new version is released on PyPI, update the formula using the provided script:
+
+```bash
+./update-formula.sh 0.1.3
+```
+
+This will automatically:
+- Download the tarball from PyPI
+- Calculate the SHA256 hash
+- Update the formula file
+- Show you the diff
+- Commit and push the changes (with confirmation)
+
+## Users: Updating brewse
 
 To update brewse to the latest version:
 
