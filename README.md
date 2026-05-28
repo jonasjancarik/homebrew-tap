@@ -1,8 +1,34 @@
-# Brewse Tap
+# Jonas Jancarik Homebrew Tap
 
 Personal Homebrew tap for @jonasjancarik's projects.
 
-## Deveolopment: Updating the Formula
+## Available Formulae
+
+### codex-autofocus
+
+Bring the Codex desktop app to the front when a Codex turn finishes.
+
+```bash
+brew tap jonasjancarik/tap
+brew install codex-autofocus
+codex-autofocus install --binary "$(brew --prefix)/bin/codex-autofocus"
+codex-autofocus-menu
+```
+
+The `codex-autofocus install` command is intentionally explicit because it edits
+your Codex hook config. Codex may ask you to review and trust the hook before it
+runs.
+
+### brewse
+
+Interactive TUI browser for Homebrew packages.
+
+```bash
+brew tap jonasjancarik/tap
+brew install brewse
+```
+
+## Development: Updating brewse
 
 When a new version is released on PyPI, update the formula using the provided script:
 
@@ -31,4 +57,3 @@ To update brewse to the latest version:
 brew update
 brew upgrade brewse
 ```
-
