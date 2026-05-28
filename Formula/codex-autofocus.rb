@@ -9,15 +9,18 @@ class CodexAutofocus < Formula
 
   def install
     system "swift", "build", "--disable-sandbox", "--configuration", "release", "--product", "codex-autofocus"
-    bin.install ".build/release/codex-autofocus"
-
     system "swift", "build", "--disable-sandbox", "--configuration", "release", "--product", "CodexAutofocusMenuBar"
+    build_dir = Pathname.new(Utils.safe_popen_read(
+      "swift", "build", "--disable-sandbox", "--configuration", "release", "--show-bin-path"
+    ).chomp)
+
+    bin.install build_dir/"codex-autofocus"
 
     app = prefix/"Codex Autofocus.app"
     (app/"Contents/MacOS").mkpath
     (app/"Contents/Resources").mkpath
-    cp ".build/release/CodexAutofocusMenuBar", app/"Contents/MacOS/CodexAutofocusMenuBar"
-    cp ".build/release/codex-autofocus", app/"Contents/Resources/codex-autofocus"
+    cp build_dir/"CodexAutofocusMenuBar", app/"Contents/MacOS/CodexAutofocusMenuBar"
+    cp build_dir/"codex-autofocus", app/"Contents/Resources/codex-autofocus"
     chmod 0755, app/"Contents/MacOS/CodexAutofocusMenuBar"
     chmod 0755, app/"Contents/Resources/codex-autofocus"
 
