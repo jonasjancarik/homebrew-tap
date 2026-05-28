@@ -1,8 +1,8 @@
 class CodexAutofocus < Formula
   desc "Bring the Codex desktop app to the front when a Codex turn finishes"
   homepage "https://github.com/jonasjancarik/codex-autofocus"
-  url "https://github.com/jonasjancarik/codex-autofocus/archive/refs/tags/v0.1.0.tar.gz"
-  sha256 "cbdf4fb28de4936bf79d4fc4564d84272da8f96edc3a73259963e629fb694365"
+  url "https://github.com/jonasjancarik/codex-autofocus/archive/refs/tags/v0.1.1.tar.gz"
+  sha256 "8c2510cfbc6760352b8e65fb2b6d94282693c83dfb8b38728b0ccb19df094649"
   license :cannot_represent
 
   depends_on xcode: ["15.0", :build]
