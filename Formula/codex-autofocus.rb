@@ -8,11 +8,41 @@ class CodexAutofocus < Formula
   depends_on xcode: ["15.0", :build]
 
   def install
-    system "swift", "build", "--configuration", "release", "--product", "codex-autofocus"
+    system "swift", "build", "--disable-sandbox", "--configuration", "release", "--product", "codex-autofocus"
     bin.install ".build/release/codex-autofocus"
 
-    system "script/package_app.sh", "--configuration", "release", "--output", buildpath/"homebrew-dist"
-    prefix.install buildpath/"homebrew-dist/Codex Autofocus.app"
+    system "swift", "build", "--disable-sandbox", "--configuration", "release", "--product", "CodexAutofocusMenuBar"
+
+    app = prefix/"Codex Autofocus.app"
+    (app/"Contents/MacOS").mkpath
+    (app/"Contents/Resources").mkpath
+    cp ".build/release/CodexAutofocusMenuBar", app/"Contents/MacOS/CodexAutofocusMenuBar"
+    cp ".build/release/codex-autofocus", app/"Contents/Resources/codex-autofocus"
+    chmod 0755, app/"Contents/MacOS/CodexAutofocusMenuBar"
+    chmod 0755, app/"Contents/Resources/codex-autofocus"
+
+    (app/"Contents/Info.plist").write <<~XML
+      <?xml version="1.0" encoding="UTF-8"?>
+      <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+      <plist version="1.0">
+      <dict>
+        <key>CFBundleExecutable</key>
+        <string>CodexAutofocusMenuBar</string>
+        <key>CFBundleIdentifier</key>
+        <string>com.jonasjancarik.codex-autofocus</string>
+        <key>CFBundleName</key>
+        <string>Codex Autofocus</string>
+        <key>CFBundlePackageType</key>
+        <string>APPL</string>
+        <key>LSMinimumSystemVersion</key>
+        <string>13.0</string>
+        <key>LSUIElement</key>
+        <true/>
+        <key>NSPrincipalClass</key>
+        <string>NSApplication</string>
+      </dict>
+      </plist>
+    XML
 
     (bin/"codex-autofocus-menu").write <<~EOS
       #!/bin/bash
