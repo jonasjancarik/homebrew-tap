@@ -10,17 +10,16 @@ class CodexAutofocus < Formula
   def install
     system "swift", "build", "--disable-sandbox", "--configuration", "release", "--product", "codex-autofocus"
     system "swift", "build", "--disable-sandbox", "--configuration", "release", "--product", "CodexAutofocusMenuBar"
-    build_dir = Pathname.new(Utils.safe_popen_read(
-      "swift", "build", "--disable-sandbox", "--configuration", "release", "--show-bin-path"
-    ).chomp)
+    cli_binary = built_product("codex-autofocus")
+    menu_binary = built_product("CodexAutofocusMenuBar")
 
-    bin.install build_dir/"codex-autofocus"
+    bin.install cli_binary
 
     app = prefix/"Codex Autofocus.app"
     (app/"Contents/MacOS").mkpath
     (app/"Contents/Resources").mkpath
-    cp build_dir/"CodexAutofocusMenuBar", app/"Contents/MacOS/CodexAutofocusMenuBar"
-    cp build_dir/"codex-autofocus", app/"Contents/Resources/codex-autofocus"
+    cp menu_binary, app/"Contents/MacOS/CodexAutofocusMenuBar"
+    cp cli_binary, app/"Contents/Resources/codex-autofocus"
     chmod 0755, app/"Contents/MacOS/CodexAutofocusMenuBar"
     chmod 0755, app/"Contents/Resources/codex-autofocus"
 
@@ -51,6 +50,12 @@ class CodexAutofocus < Formula
       #!/bin/bash
       exec /usr/bin/open -n "#{opt_prefix}/Codex Autofocus.app"
     EOS
+  end
+
+  def built_product(name)
+    candidates = Pathname.glob(buildpath/".build/**/release/#{name}").select(&:file?)
+    odie "SwiftPM did not build #{name}" if candidates.empty?
+    candidates.first
   end
 
   def caveats
