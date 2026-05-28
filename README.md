@@ -11,7 +11,7 @@ Bring the Codex desktop app to the front when a Codex turn finishes.
 ```bash
 brew tap jonasjancarik/tap
 brew install codex-autofocus
-codex-autofocus install --binary "$(brew --prefix)/bin/codex-autofocus"
+codex-autofocus install --binary "$(brew --prefix codex-autofocus)/bin/codex-autofocus"
 codex-autofocus-menu
 ```
 
