@@ -13,8 +13,6 @@ class CodexAutofocus < Formula
     cli_binary = built_product("codex-autofocus")
     menu_binary = built_product("CodexAutofocusMenuBar")
 
-    bin.install cli_binary
-
     app = prefix/"Codex Autofocus.app"
     (app/"Contents/MacOS").mkpath
     (app/"Contents/Resources").mkpath
@@ -45,6 +43,8 @@ class CodexAutofocus < Formula
       </dict>
       </plist>
     XML
+
+    bin.install cli_binary
 
     (bin/"codex-autofocus-menu").write <<~EOS
       #!/bin/bash
